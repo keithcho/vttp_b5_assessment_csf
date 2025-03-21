@@ -46,5 +46,8 @@ public class OrdersRepository {
   // Write the native MongoDB query for your access methods in the comment below
   //
   //  Native MongoDB query here
+  public void insertOrder(Document order) {
+    mongoTemplate.insert(order, "orders");
+  }
   
 }

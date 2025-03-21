@@ -43,6 +43,7 @@ export class PlaceOrderComponent implements OnInit {
   confirmOrder() {
     console.log('Order sent')
     this.restaurantSvc.confirmOrder(this.form.value['username'], this.form.value['password'])
+    this.router.navigate(['/confirmation'])
   }
 
   private createForm(): FormGroup {

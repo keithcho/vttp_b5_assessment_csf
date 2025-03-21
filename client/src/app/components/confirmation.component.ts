@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirmation',
@@ -8,6 +9,11 @@ import { Component } from '@angular/core';
 })
 export class ConfirmationComponent {
 
+  private router = inject(Router)
+
   // TODO: Task 5
 
+  back() {
+    this.router.navigate(['/'])
+  }
 }
