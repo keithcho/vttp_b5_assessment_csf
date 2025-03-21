@@ -1,5 +1,8 @@
 package vttp.batch5.csf.assessment.server.repositories;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -16,6 +19,16 @@ public class RestaurantRepository {
         SqlRowSet rs = template.queryForRowSet(
             "SELECT * FROM CUSTOMERS WHERE username LIKE ?", username);
         return rs.getString("username");
+    }
+
+    public void insertOrderDetails() {
+        List<Object[]> batch = new ArrayList<>();
+        template.batchUpdate("""
+            INSERT INTO place_orders 
+                (order_id, payment_id, order_date, total, username)
+            VALUES
+                (?, ?, ?, ?, ?);
+        """, batch);
     }
 
 }
