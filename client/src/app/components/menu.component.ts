@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RestaurantService } from '../restaurant.service';
-import { firstValueFrom, lastValueFrom, Observable, take } from 'rxjs';
-import { MenuItem } from '../models';
+import { firstValueFrom, lastValueFrom, map, Observable, take } from 'rxjs';
+import { CartItem, MenuItem } from '../models';
 import { OrderStore } from '../order.store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -14,19 +15,29 @@ export class MenuComponent implements OnInit {
 
   menuItems$!: Observable<MenuItem[]>
   itemCount$!: Observable<number>
-  orderMap$!: Observable<Map<string, number>>
+  totalPrice$!: Observable<number>
+  cartItems!: CartItem[]
+
   // TODO: Task 2
+  private router = inject(Router)
   private restaurantSvc = inject(RestaurantService)
   private orderStore = inject(OrderStore)
 
   ngOnInit(): void {
+    // this.cartItems$ = this.restaurantSvc.getMenuItems().pipe(
+    //   map(menuItem => menuItem.map(item => new CartItem())
+
+    //   )
+    // )
     this.menuItems$ = this.restaurantSvc.getMenuItems()
+    this.cartItems = this.restaurantSvc.cartItems
     this.itemCount$ = this.orderStore.itemCount$
-    // this.orderMap$ = this.orderStore.orderMap$
+    this.totalPrice$ = this.orderStore.totalPrice$
   }
 
   addItem(item: MenuItem) {
     this.orderStore.addItem(item)
+    // this.restaurantSvc.addItem(item)
   }
 
   removeItem(itemId: string) {
@@ -34,18 +45,12 @@ export class MenuComponent implements OnInit {
   }
 
   getItemQty(itemId: string): number {
-    let qty: number = 0
-    this.orderStore.cartItems$.subscribe({
-      next: (data) => {
-        qty = data.filter(i => i.id === itemId).length
-      }
-    })
-    return qty
+    return this.restaurantSvc.getItemQty(itemId)
   }
 
-  getTotalPrice(): number {
-    let totalPrice: number = 0
-
+  placeOrder() {
+    this.restaurantSvc.buildCart()
+    this.router.navigate(['/placeorder'])
   }
 
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,17 @@ public class RestaurantController {
 
   // TODO: Task 4
   // Do not change the method's signature
+  @PostMapping("/food_order")
   public ResponseEntity<String> postFoodOrder(@RequestBody String payload) {
-    return ResponseEntity.ok("{}");
+    System.out.println("--- Order Received ---");
+    System.out.println(payload);
+
+    String paymentPayload = restaurantSvc.buildPaymentPayload(payload);
+
+    System.out.println("Payload sent: " + paymentPayload);
+
+    String response = restaurantSvc.invokePayment(paymentPayload);
+    System.out.println(response);
+    return ResponseEntity.ok(response);
   }
 }

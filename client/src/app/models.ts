@@ -6,10 +6,16 @@ export interface MenuItem {
   price: number
 }
 
-// export interface CartItem {
-//   id: string
-//   name: string
-//   description: string
-//   price: number
-//   quantity: number
-// }
+export interface CartItem {
+  id: string
+  name: string
+  description: string
+  price: number
+  quantity: number
+}
+
+export interface PayloadItem {
+  id: string
+  price: number
+  quantity: number
+}

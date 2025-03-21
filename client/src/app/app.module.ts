@@ -11,13 +11,14 @@ import { PlaceOrderComponent } from './components/place-order.component';
 import { ConfirmationComponent } from './components/confirmation.component';
 import { RestaurantService } from './restaurant.service';
 import { OrderStore } from './order.store';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent, MenuComponent, PlaceOrderComponent, ConfirmationComponent
   ],
   imports: [
-    BrowserModule, ReactiveFormsModule
+    BrowserModule, ReactiveFormsModule, AppRoutingModule
   ],
   providers: [ provideHttpClient(), RestaurantService, OrderStore ],
   bootstrap: [AppComponent]

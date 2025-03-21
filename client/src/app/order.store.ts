@@ -1,15 +1,15 @@
 import { ComponentStore } from "@ngrx/component-store";
-import { MenuItem } from "./models";
+import { CartItem, MenuItem } from "./models";
 import { Injectable } from "@angular/core";
 
 export interface OrderState {
-  items: MenuItem[]
-  // orderMap: Map<string, number>
+  menuItems: MenuItem[]
+  cartItems: CartItem[]
 }
 
 const initialState: OrderState = {
-  items: [],
-  // orderMap: new Map<string, number>()
+  menuItems: [],
+  cartItems: []
 }
 
 @Injectable()
@@ -17,21 +17,34 @@ export class OrderStore extends ComponentStore<OrderState> {
   constructor() { super(initialState) }
 
   // Selectors
-  readonly cartItems$ = this.select(store => store.items)
-  // readonly orderMap$ = this.select(store => store.orderMap)
-  readonly itemCount$ = this.select(store => store.items.length)
+  readonly menuItems$ = this.select(store => store.menuItems)
+  readonly cartItems$ = this.select(store => store.cartItems)
+  readonly itemCount$ = this.select(store => store.menuItems.length)
+  readonly totalPrice$ = this.select(store => {
+    let totalPrice: number = 0
+    store.menuItems.forEach(menuItems => totalPrice += menuItems.price)
+    return totalPrice
+  })
 
   // Updaters
   readonly addItem = this.updater((store, item: MenuItem) => {
+    // const cartItem: CartItem = {
+    //   id: item.id,
+    //   name: item.name,
+    //   description: item.description,
+    //   price: item.price,
+    //   quantity: item.quantity + 1,
+    // }
     return {
-      items: [ ...store.items, item ],
-      // orderMap: store.orderMap.set(item.id, store.orderMap.get(item.id)! + 1)
+      menuItems: [ ...store.menuItems, item ],
     } as OrderState
   })
 
   readonly removeItem = this.updater((store, itemId: string) => {
     return {
-      items: store.items.filter(item => item.id !== itemId)
+      menuItems: store.menuItems.filter(item => item.id !== itemId)
     } as OrderState
   })
+
+  readonly clearStore = this.updater(() => initialState)
 }

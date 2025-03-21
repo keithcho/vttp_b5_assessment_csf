@@ -1,5 +1,10 @@
 package vttp.batch5.csf.assessment;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
+
 import org.bson.Document;
 
 import jakarta.json.Json;
@@ -22,5 +27,13 @@ public class Utils {
         .add("description", menuItem.getDescription())
         .add("price", menuItem.getPrice())
         .build();
+    }
+    public static String generateUUID() {
+        String randomString = UUID.randomUUID().toString().replace("-", "");
+        return randomString.substring(0, Math.min(randomString.length(), 8));
+    }
+    public static String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        return new String(digest.digest(password.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
     }
 }
