@@ -9,6 +9,8 @@ import { MenuComponent } from './components/menu.component';
 import { PlaceOrderComponent } from './components/place-order.component';
 
 import { ConfirmationComponent } from './components/confirmation.component';
+import { RestaurantService } from './restaurant.service';
+import { OrderStore } from './order.store';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,7 @@ import { ConfirmationComponent } from './components/confirmation.component';
   imports: [
     BrowserModule, ReactiveFormsModule
   ],
-  providers: [ provideHttpClient() ],
+  providers: [ provideHttpClient(), RestaurantService, OrderStore ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

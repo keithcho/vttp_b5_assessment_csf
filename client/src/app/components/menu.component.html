@@ -3,41 +3,53 @@
     <div class="fs-1 fw-bold text-primary">Menu ($XXX)</div>
     <div>
       <button type="button" class="btn btn-primary">
-        Place Order (XXX)
+        Place Order 
+        (<span>{{ itemCount$ | async }}</span>)
       </button>
     </div>
   </div>
 </div>
 
-<!-- each row display a single mene item -->
-<div class="row mb-2">
-  <div class="col">
-    <div class="menu-item">
-      <div>
-        <button type="button" class="btn btn-warning">
-          <i class="bi bi-x-square"></i>
-        </button>
-      </div>
-      <div class="menu-details">
-        <div>Name: <span class="fw-bold"> XXX </span> </div>
-        <div>Description:
-          <span class="fst-italic">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          </span>
+<!-- each row display a single menu item -->
+@for (item of menuItems$ | async; track $index) {
+  <div class="row mb-2">
+    <div class="col">
+      <div class="menu-item">
+        <div>
+          <button type="button" class="btn btn-warning" (click)="removeItem(item.id)">
+            <i class="bi bi-x-square"></i>
+          </button>
         </div>
-        <div></div>
-          <div class="text-danger fw-bold">Quantity: XXX</div>
-      </div>
-      <div class="menu-button-end">
-        <button type="button" class="btn btn-success">
-          <i class="bi bi-plus-circle"></i>
-        </button>
+        <div class="menu-details">
+          <div>Name: <span class="fw-bold"> {{ item.name }} </span> </div>
+          <div>Description:
+            <span class="fst-italic">
+              {{ item.description }}
+            </span>
+          </div>
+          <div>Price: 
+            <span>
+              ${{ item.price | number : '1.2-2' }}
+            </span>
+          </div>
+          <div></div>
+          @if (getItemQty(item.id) > 0) {
+            <div class="text-danger fw-bold">Quantity: 
+              <span>{{ getItemQty(item.id) }}</span>
+            </div>
+          }
+        </div>
+        <div class="menu-button-end">
+          <button type="button" class="btn btn-success" (click)="addItem(item)">
+            <i class="bi bi-plus-circle"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}
 
-<div class="row mb-2">
+<!-- <div class="row mb-2">
   <div class="col">
     <div class="menu-item">
       <div>
@@ -62,4 +74,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

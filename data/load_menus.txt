@@ -1,1 +1,2 @@
 # TODO: Task 1.1
+mongoimport --db=csf_b5 --collection=menus --type=json --jsonArray --file=menus.json --authenticationDatabase=admin
